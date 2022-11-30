@@ -1,0 +1,22 @@
+pipeline {
+     agent any
+     stages {
+         stage('clone') {
+             steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'ram1', url: 'https://github.com/ummanni123/maven-sample-project.git']]])
+             }
+         }
+         stage('build') {
+            steps {
+                sh 'mvn clean package'
+            }
+         }
+         stage('upload nexus') {
+             steps {
+                nexusArtifactUploader artifacts: [[artifactId: 'sample', classifier: '', file: 'target/Example-0.0.1-SNAPSHOT.war', type: 'war']], credentialsId: 'nexus', groupId: 'java', nexusUrl: '52.55.94.175:8081/nexus', nexusVersion: 'nexus2', protocol: 'http', repository: 'JAVA', version: '1.0.$BUILD_NUMBER'
+            }
+        }
+           
+      }
+               
+}
