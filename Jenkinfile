@@ -15,7 +15,7 @@ pipeline {
              when {
                 branch "release"
               
-              ]
+              }
              steps {
                 nexusArtifactUploader artifacts: [[artifactId: 'sample', classifier: '', file: 'target/Example-0.0.1-SNAPSHOT.war', type: 'war']], credentialsId: 'nexus', groupId: 'java', nexusUrl: '52.55.94.175:8081/nexus', nexusVersion: 'nexus2', protocol: 'http', repository: 'JAVA', version: '1.0.$BUILD_NUMBER'
             }
